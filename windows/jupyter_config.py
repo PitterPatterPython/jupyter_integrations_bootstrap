@@ -65,10 +65,19 @@ def integrations_install():
     for this_repo in myconfig["install_integrations"]:
         print(f"\t Installing Repo {this_repo}")
         this_url = myconfig['repos'][this_repo]['repo']
+        this_type = myconfig['repos'][this_repo]['type']
         this_add_cmd = myconfig['repos'][this_repo].get('add_cmd', None)
         if this_add_cmd is not None:
             print(f"\t Extra Add Command: {this_add_cmd}")
-        res = boot_util.download_unzip_install_repo(this_repo,  this_url, myconfig['proxies'], rmdir=True, add_cmd=this_add_cmd)
+
+        if this_type == 'zip':
+            res = boot_util.download_unzip_install_repo(this_repo, this_url, myconfig['proxies'], rmdir=True, add_cmd=this_add_cmd)
+        elif this_type == 'zip_pip':
+            res = boot_util.download_unzip_pip_install_repo(this_repo, this_url, myconfig['proxies'], rmdir=True, add_cmd=this_add_cmd)
+        else:
+            print(f"Error: Unknown install type: {this_type}")
+            res = 1
+
         if res == 0:
             print(f"\t\t Install Successful")
         else:

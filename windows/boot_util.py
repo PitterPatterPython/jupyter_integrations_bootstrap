@@ -37,6 +37,52 @@ def run_install_cmd(inst_command, title=None, raw_args=False, cmd_remain=False):
         print(f"\t\t\t Std err: {out_err}")
     return inst_code
 
+
+def download_unzip_pip_install_repo(repo_name, repo_url, myproxies, rmdir=True, add_cmd=None):
+    import requests
+
+    print("")
+    print(f"\t Downloading and PIP Installing {repo_name}\n\t\t {repo_url}")
+
+    output = f"{repo_name}.zip"
+
+    inst_dir = "cur_repo_install"
+
+    requests.packages.urllib3.disable_warnings()
+
+    print(f"\t\t Downloading")
+    r = requests.get(repo_url, proxies=myproxies, verify=False)
+    zip_content = r.content
+
+    with open(output, 'wb') as f:
+        f.write(zip_content)
+    print(f"\t\t Unzipping")
+    with zipfile.ZipFile(output, 'r') as zip_ref:
+        zip_ref.extractall(inst_dir)
+    print(f"\t\t Removing Zip")
+    os.remove(output)
+
+    subfolders = [f.path for f in os.scandir(inst_dir) if f.is_dir() and f.name.find(repo_name) >= 0]
+    repo_base = subfolders[0].split('\\')[1]
+    install_cmd = f"cd {inst_dir} && cd {repo_base} && pip install --upgrade --force-reinstall ."
+    inst_code = 0
+    inst_add_code = 0
+
+    isnt_code = run_install_cmd(install_cmd, title=f"\t Installing repo {repo_name}", cmd_remain=False)
+
+    if inst_code == 0 and add_cmd is not None:
+        add_install_cmd = f"cd {inst_dir} && cd {repo_base} && {add_cmd}"
+        isnt_add_code = run_install_cmd(add_install_cmd, title=f"\t\t Running addtional cmd {add_install_cmd} for repo {repo_name}", cmd_remain=False)
+
+    if rmdir:
+        print("\t\t Removing Installation Directory")
+        shutil.rmtree(inst_dir)
+    if inst_code == 0 and inst_add_code == 0:
+        return 0
+    else:
+        return 1
+
+
 def download_unzip_install_repo(repo_name, repo_url, myproxies, rmdir=True, add_cmd=None):
     import requests
 
