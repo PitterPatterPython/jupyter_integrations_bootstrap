@@ -64,7 +64,7 @@ def download_unzip_pip_install_repo(repo_name, repo_url, myproxies, rmdir=True, 
 
     subfolders = [f.path for f in os.scandir(inst_dir) if f.is_dir() and f.name.find(repo_name) >= 0]
     repo_base = subfolders[0].split('\\')[1]
-    install_cmd = f"cd {inst_dir} && cd {repo_base} && pip install --upgrade --force-reinstall ."
+    install_cmd = f"cd {inst_dir} && cd {repo_base} && pip install --upgrade --force-reinstall --no-deps ."
     inst_code = 0
     inst_add_code = 0
 
