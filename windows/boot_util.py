@@ -76,7 +76,7 @@ def download_unzip_pip_install_repo(repo_name, repo_url, myproxies, rmdir=True, 
 
     if rmdir:
         print("\t\t Removing Installation Directory")
-        shutil.rmtree(inst_dir)
+        shutil.rmtree(inst_dir, ignore_errors=True)
     if inst_code == 0 and inst_add_code == 0:
         return 0
     else:
@@ -121,7 +121,7 @@ def download_unzip_install_repo(repo_name, repo_url, myproxies, rmdir=True, add_
 
     if rmdir:
         print("\t\t Removing Installation Directory")
-        shutil.rmtree(inst_dir)
+        shutil.rmtree(inst_dir, ignore_errors=True)
     if inst_code == 0 and inst_add_code == 0:
         return 0
     else:
