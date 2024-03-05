@@ -80,7 +80,7 @@ def write_odbc_configs():
             with codecs.open(f"{odbc_dir}\\{odbc_file}", encoding='utf-16') as in_reg:
                 this_data = in_reg.read()
             for odbc_var in myconfig['odbc_vars'].keys():
-                if this_data.find(odbc_val) >= 0:
+                if this_data.find(odbc_var) >= 0:
                     replace_val = myconfig['odbc_vars'][odbc_var]
                     if isinstance(replace_val, str):
                         if replace_val.find('%') >= 0:
@@ -93,11 +93,11 @@ def write_odbc_configs():
                             if os.path.isdir(my_dir):
                                 replace_val = max(os.listdir(my_dir))
                             else:
-                                print(f"Provided Path does not exist {mydir} - Using name of odbc_val {odbc_val}")
-                                replace_val = odbc_val
+                                print(f"Provided Path does not exist {mydir} - Using name of odbc_var {odbc_var}")
+                                replace_val = odbc_var
                         else:
-                            print(f"Warning: r_type {r_type} not functional. Not setting odbc_val (going to use name of {odbc_val}")
-                            replace_val = odbc_val
+                            print(f"Warning: r_type {r_type} not functional. Not setting odbc_var (going to use name of {odbc_var}")
+                            replace_val = odbc_var
                     this_data = this_data.replace(odbc_var, replace_val)
             with codecs.open(odbc_file, 'w', encoding='utf-16') as out_reg:
                 out_reg.write(this_data)
