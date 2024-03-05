@@ -56,21 +56,21 @@ def main():
     write_integration_startups()
     write_env_imports()
     write_odbc_configs()
-    
+
     #print(f"Current Working Dir: {current_cwd}")
-    
-    
+
+
 def write_odbc_configs():
     global myconfig
-    
+
     print("")
     print("* Writing ODBC Config")
-    
+
     data_source_file = os.path.expandvars(myconfig['data_source_loc'])
     custom_data_source_file = os.path.expandvars(myconfig['custom_data_source_loc'])
-    
+
     odbc_dir = f"{myconfig['conf_dir']}\\ODBC"
-    
+
     if not os.path.isdir(odbc_dir):
         print("\t ODBC Config Directory {odbc_dir} does not exist")
         return None
@@ -79,15 +79,30 @@ def write_odbc_configs():
             print(f"\t Processing file {odbc_file} as ODBC Template File")
             with codecs.open(f"{odbc_dir}\\{odbc_file}", encoding='utf-16') as in_reg:
                 this_data = in_reg.read()
-            for odbc_var in myconfig['odbc_vars']:
-                replace_val = myconfig['odbc_vars'][odbc_var]
-                if replace_val.find('%') >= 0:
-                    replace_val = os.path.expandvars(replace_val)
-                this_data = this_data.replace(odbc_var, replace_val)
+            for odbc_var in myconfig['odbc_vars'].keys():
+                if this_data.find(odbc_val) >= 0:
+                    replace_val = myconfig['odbc_vars'][odbc_var]
+                    if isinstance(replace_val, str):
+                        if replace_val.find('%') >= 0:
+                            replace_val = os.path.expandvars(replace_val)
+                    elif isinstance(replace_val, dict):
+                        r_type = replace_val.get("type", "")
+                        r_value = replace_val.get("value", "")
+                        if r_type == "dir_max":
+                            my_dir = r_value
+                            if os.path.isdir(my_dir):
+                                replace_val = max(os.listdir(my_dir))
+                            else:
+                                print(f"Provided Path does not exist {mydir} - Using name of odbc_val {odbc_val}")
+                                replace_val = odbc_val
+                        else:
+                            print(f"Warning: r_type {r_type} not functional. Not setting odbc_val (going to use name of {odbc_val}")
+                            replace_val = odbc_val
+                    this_data = this_data.replace(odbc_var, replace_val)
             with codecs.open(odbc_file, 'w', encoding='utf-16') as out_reg:
                 out_reg.write(this_data)
-                
-            run_res = boot_util.run_install_cmd(['reg', 'import', odbc_file], title=f"ODBC Import {odbc_file}", raw_args=True, cmd_remain=False)            
+
+            run_res = boot_util.run_install_cmd(['reg', 'import', odbc_file], title=f"ODBC Import {odbc_file}", raw_args=True, cmd_remain=False)
             if run_res == 0:
                 pass
             else:
