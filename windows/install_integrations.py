@@ -85,7 +85,7 @@ def main():
     install_step(this_step, this_cmd, this_num)
 
     this_step = "Install Python Packages"
-    this_cmd = f"{activate_script} && python package_installs.py --req_file {req_file}"
+    this_cmd = f"{activate_script} && python package_installs.py --req_file {req_file} {pyver}"
     this_num = 2
 
     install_step(this_step, this_cmd, this_num)

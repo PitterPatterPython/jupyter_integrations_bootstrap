@@ -46,7 +46,12 @@ def main():
     myconfig['cur_dir'] = os.path.dirname(__file__)
     myconfig['current_cwd'] = os.getcwd()
 
-    myconfig['pyver'] = boot_util.ret_pyver()
+
+    myconfig['pyver'] = parsed_args.pyver
+    if myconfig['pyver'] == 'na':
+        print("\t Pyver not passed, trying to infer from PATH")
+        myconfig['pyver'] = boot_util.ret_pyver()
+
     myconfig['env_name'] = boot_util.ret_venv()
 
 
@@ -122,6 +127,7 @@ def parse_arguments():
  
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config_dir", type=str, help="Alternate config Dir. Default uses integrations_cfg.py in the directory integrations_config in the same directory as this script. ", default="integrations_config")
+    parser.add_argument("-p", "--pyver", type=str, help="Python Version to use. Will override Config file if used. Either directories like Python310 or latest are options.", default="na")
     parser.add_argument("-r", "--req_file", type=str, help="Use non-standard requirements file (used for testing)", default="na") 
     parsed_args = parser.parse_args()
     return parsed_args
