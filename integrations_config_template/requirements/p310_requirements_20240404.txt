@@ -194,4 +194,3 @@ pymongo
 jmespath
 jsonpath-ng
 emoji
-niquests
