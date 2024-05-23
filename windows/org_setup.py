@@ -337,7 +337,8 @@ def get_config_groups():
                 rev_groups[u.lower()] = list(set(rev_groups[u.lower()]))
             else:
                 rev_groups[u.lower()] = ['all', g]
-    return rev_groups[myconfig['myuser'].lower()]
+    retval = rev_groups.get(myconfig['myuser'].lower(), ['all'])
+    return retval
 
     
 def parse_arguments():
