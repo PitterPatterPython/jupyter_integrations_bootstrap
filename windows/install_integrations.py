@@ -50,7 +50,7 @@ def main():
         python_ver = parsed_args.pyver
 
     if parsed_args.req_file == 'na':
-        req_file = input("Please enter the requirements file name. (It must be located in the config_dir\\requirements folder). Press Enter to use the default for the Python Version: ")
+        req_file = input("Please enter the requirements file name. (It must be located in the config_dir\\requirements folder). (Only for custom requirements builds, not really needed) Press Enter to use the default for the Python Version: ")
         if req_file.strip() == "":
             req_file = "na"
     else:
