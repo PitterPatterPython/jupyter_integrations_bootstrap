@@ -194,4 +194,4 @@ pymongo
 jmespath
 jsonpath-ng
 emoji
-niquests
+ppp-connectors
