@@ -33,8 +33,8 @@ def run_install_cmd(inst_command, title=None, raw_args=False, cmd_remain=False):
         print(f"\t\t Error running {title} - Error Code: {inst_code}")
         out_out = out_proc.stdout.decode('utf-8', errors='replace')
         out_err = out_proc.stderr.decode('utf-8', errors='replace')
-        print(f"\t\t\t Std out: {out_out}")
-        print(f"\t\t\t Std err: {out_err}")
+        print(f"\t\t\t Std out: {out_out.encode('ascii', 'ignore').decode()}")
+        print(f"\t\t\t Std err: {out_err.encode('ascii', 'ignore').decode()}")
     return inst_code
 
 
