@@ -75,7 +75,7 @@ def main():
     print("")
 
     if parsed_args.pyver == 'na':
-        python_ver = input("Please enter the Python Version to use, Example: Python310 or latest. (Press enter for default ({install_default}): ")
+        python_ver = input(f"Please enter the Python Version to use, Example: Python310 or latest. (Press enter for default ({install_default})): ")
         if python_ver.strip() == "":
             python_ver = install_default
             print(f"Using defaul of {python_ver} as Python Version")
