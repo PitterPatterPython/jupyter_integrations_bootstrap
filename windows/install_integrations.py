@@ -47,8 +47,8 @@ def main():
     print("")
     print("Which Python Version should we use?")
     print("")
-    installed_pyvers = check_python_vers()
-    cur_running = ret_pyver()
+    installed_pyvers = boot_util.check_python_vers()
+    cur_running = boot_util.ret_pyver()
     if len(installed_pyvers) > 0:
         highest_version_installed = installed_pyvers[0]
     else:
