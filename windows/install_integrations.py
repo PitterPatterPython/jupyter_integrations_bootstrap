@@ -78,7 +78,8 @@ def main():
         python_ver = input(f"Please enter the Python Version to use, Example: Python310 or latest. (Press enter for default ({install_default})): ")
         if python_ver.strip() == "":
             python_ver = install_default
-            print(f"Using defaul of {python_ver} as Python Version")
+            print(f"Using default of {python_ver} as Python Version")
+            print("")
     else:
         print(f"Using passed pyver {parsed_args.pyver} rather than defaults {install_default}")
         python_ver = parsed_args.pyver
