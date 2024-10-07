@@ -44,10 +44,46 @@ def main():
     else:
         env_name = parsed_args.env_name
 
-    if parsed_args.pyver == 'na':
-        python_ver = input("Please enter the Python Version to use, Example: Python310 or latest. (Press enter for config default): ")
+    print("")
+    print("Which Python Version should we use?")
+    print("")
+    installed_pyvers = check_python_vers()
+    cur_running = ret_pyver()
+    if len(installed_pyvers) > 0:
+        highest_version_installed = installed_pyvers[0]
     else:
+        highest_version_installed = None
+
+
+    if most_recent_installed == cur_running:
+        print(f"This running matches the most recent installed - Setting Deftaul to {cur_running}")
+        install_default = cur_running
+    elif most_recent_installed is not None:
+        print(f"Currently Running {cur_running} does not match highest version installed {highest_version_installed} - Setting default to highest_version_installed {highest_version_installed}")
+        install_default = highest_version_installed
+    else:
+        print(f"Could not determine highest version installed so we are setting default to the currently running version: Good luck {cur_running}")
+        install_default = cur_running
+
+    print("Based on your installs and PATH:")
+    print("")
+    print(f"This version of Python: {cur_running}")
+    print(f"Currently installed: {installed_pyvers}")
+    print(f"Highest version installed: {highest_version_installed}")
+    print("")
+    print(f"Install Default: {install_default}")
+    print("")
+
+    if parsed_args.pyver == 'na':
+        python_ver = input("Please enter the Python Version to use, Example: Python310 or latest. (Press enter for default ({install_default}): ")
+        if python_ver.strip() == "":
+            python_ver = install_default
+            print(f"Using defaul of {python_ver} as Python Version")
+    else:
+        print(f"Using passed pyver {parsed_args.pyver} rather than defaults {install_default}")
         python_ver = parsed_args.pyver
+
+
 
     if parsed_args.req_file == 'na':
         req_file = input("Please enter the requirements file name. (It must be located in the config_dir\\requirements folder). (Only for custom requirements builds, not really needed) Press Enter to use the default for the Python Version: ")

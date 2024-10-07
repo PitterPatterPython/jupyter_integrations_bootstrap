@@ -174,18 +174,33 @@ def load_json_config(file_loc="integrations_cfg.py"):
 
     return json_cfg
 
+def check_python_vers(program_files=r"C:\Program Files"):
+    dir_check = os.listdir(program_files)
+    pyvers = []
+    for d in dir_check:
+        if d.find("Python") >= 0:
+            pyvers.append(d)
+
+    pyvers = sorted(pyvers, reverse=True)
+    return pyvers
+
+
 def ret_pyver():
 
     full_path = os.environ['PATH']
 
     p_items = full_path.split(";")
+    pyver = None
     for x in p_items:
         if x.find(r"C:\Program Files\Python") == 0:
             for i in x.split("\\"):
                 if i.find("Python") == 0:
                     pyver = i
                     break
+            if pyver is not None:
+                break
     return pyver
+
 
 def ret_venv():
     venv = os.environ['VIRTUAL_ENV']
