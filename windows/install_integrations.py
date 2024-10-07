@@ -55,10 +55,10 @@ def main():
         highest_version_installed = None
 
 
-    if most_recent_installed == cur_running:
+    if highest_version_installed == cur_running:
         print(f"This running matches the most recent installed - Setting Deftaul to {cur_running}")
         install_default = cur_running
-    elif most_recent_installed is not None:
+    elif highest_version_installed is not None:
         print(f"Currently Running {cur_running} does not match highest version installed {highest_version_installed} - Setting default to highest_version_installed {highest_version_installed}")
         install_default = highest_version_installed
     else:
