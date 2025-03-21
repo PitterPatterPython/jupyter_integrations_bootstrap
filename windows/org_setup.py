@@ -154,7 +154,7 @@ def write_env_imports():
 
 
     if len(myconfig['u_groups']) == 1 and myconfig['u_groups'][0] == 'all':
-        print(f"\t User {myconfing['myuser']} is not in any config group. Using standard no additional datasources specified")
+        print(f"\t User {myconfig['myuser']} is not in any config group. Using standard no additional datasources specified")
     elif len(myconfig['u_groups']) >= 2:
         the_groups  = [x for x in myconfig['u_groups'] if x != 'all']
 
@@ -233,7 +233,7 @@ def write_helloworld():
     print("* Writing Helloworld scripts based on group membership")
 
     if len(myconfig['u_groups']) == 1 and myconfig['u_groups'][0] == 'all':
-        print(f"\t User {myconfing['myuser']} is not in any config group. Using standard helloworld")
+        print(f"\t User {myconfig['myuser']} is not in any config group. Using standard helloworld")
     elif len(myconfig['u_groups']) >= 2:
         the_groups  = [x for x in myconfig['u_groups'] if x != 'all']
         if len(the_groups) == 1:
