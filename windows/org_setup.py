@@ -93,7 +93,7 @@ def write_odbc_configs():
                             if os.path.isdir(my_dir):
                                 replace_val = max(os.listdir(my_dir))
                             else:
-                                print(f"Provided Path does not exist {mydir} - Using name of odbc_var {odbc_var}")
+                                print(f"Provided Path does not exist {my_dir} - Using name of odbc_var {odbc_var}")
                                 replace_val = odbc_var
                         else:
                             print(f"Warning: r_type {r_type} not functional. Not setting odbc_var (going to use name of {odbc_var}")

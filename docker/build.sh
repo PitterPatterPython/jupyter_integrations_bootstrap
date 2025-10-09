@@ -2,12 +2,18 @@
 
 set -e
 
-MYDEV=${DEBUG:-0}
-MYTYPE=${1:-psf}
-PY_VER=${2:-3.10.13-bookworm}
-PVER=${PY_VER%%-*}
-BASE_TAG="integrations_base_${MYTYPE}_${PVER}"
-FINAL_TAG="jupyter_integrations_${MYTYPE}_${PVER}"
+PVER="python_312"
+PY_VER="3.12.10-bookworm"
+
+cwd=`pwd`
+
+BASE_TAG="integrations_base_${PVER}"
+FINAL_TAG="jupyter_integrations_${PVER}"
+
+cp jupyter_integrations.cfg ./$PVER/
+cp entrypoint.sh ./$PVER/
+cp jupyter_integration_data_sources_template.env ./$PVER/
+cd $PVER
 
 WORK_DIR=`mktemp -d`
 cleanup() {
@@ -40,7 +46,6 @@ trap cleanup exit
 #fi
 ###
 
-echo "MYTYPE: $MYTYPE"
 echo "PVER: $PVER"
 echo "BASE_TAG: $BASE_TAG"
 echo "FINAL_TAG: $FINAL_TAG"
@@ -49,14 +54,9 @@ docker_build(){
     local TAG=$1
     local PY_VER=${2:-$PY_VER}
     local TARGET=${3:-""}
-    local CACHE_FLG=""
 
-    # When it DEV use cache for sanity
-    if [[ $MYDEV -ne 0 ]]; then
-        CACHE_FLG="--no-cache"
-    fi
-    
-    docker build $CACHE_FLG \
+
+    docker build \
         --build-arg="PY_VER=$PY_VER" \
         -t ${TAG} .
 
@@ -72,7 +72,9 @@ docker_build ${FINAL_TAG}
 
 if [ $? -eq 0 ]; then
     echo "Final Build Complete"
+    cd $cwd
 else
-    echo "Final Build for $MYTYPE $PVER failed - exiting"
+    echo "Final Build for $PVER failed - exiting"
+    cd $cwd
     exit 1
 fi

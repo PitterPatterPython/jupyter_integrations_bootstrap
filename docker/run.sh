@@ -20,19 +20,14 @@ fi
 
 
 
-MYTYPE="$1"
-PVER="$2"
-MYPORT="$3"
+PVER="$1"
 
-if [ -z ${MYTYPE} ]; then
-    echo "No Type selected, defaulting to psf"
-    MYTYPE="psf"
-fi
+MYPORT="$2"
 
-if [ -z ${PVER} ]; then
-    echo "No Python version provided, defaulting to 310 (3.10)"
-    PVER="310"
-fi
+#if [ -z ${PVER} ]; then
+#    echo "No Python version provided, defaulting to 310 (3.10)"
+#    PVER="310"
+#fi
 
 
 if [ "$MYPORT" == "" ]; then
@@ -43,7 +38,7 @@ else
     LOCAL_PORT="$MYPORT"
 fi
 
-MYDFILE="Dockerfile_${MYTYPE}_${PVER}"
+#MYDFILE="Dockerfile_${MYTYPE}_${PVER}"
 
 #if [ -f ./${MYDFILE} ]; then
 #    echo "Found Dockerfile for $MYTYPE - $PVER - Continuing"
@@ -59,7 +54,7 @@ MYDFILE="Dockerfile_${MYTYPE}_${PVER}"
 #    fi
 #fijupyter_integrations_psf_3.10.13
 RUN_IMG="jupyter_integrations_psf_3.10.13"
-
+RUN_IMG="jupyter_integrations_$PVER"
 echo ""
 echo "Using $RUN_IMG for our run image"
 echo ""
@@ -118,4 +113,4 @@ echo "Also running on port 5678"
 
 # docker network create -d bridge myjupnet
 
- docker run -p${LOCAL_PORT}:8888 -p5678:5678 --env-file=${ENV_FILE} -v $NOTEBOOKDIR:${DHOME}/Notebooks --net myjupnet ${RUN_IMG} ${CMD}
+ docker run -p${LOCAL_PORT}:8888 -p5678:5678 --env-file=${ENV_FILE} -v $NOTEBOOKDIR:${DHOME}/Notebooks  ${RUN_IMG} ${CMD}
