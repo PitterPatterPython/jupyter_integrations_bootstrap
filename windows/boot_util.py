@@ -172,6 +172,21 @@ def load_json_config(file_loc="integrations_cfg.py"):
 
         json_cfg = None
 
+
+    if json_cfg.get('proxies_useos', 0) == 1:
+        win_build = sys.getwindowsversion().build
+        if win_build >= 22000:
+            win11prox = json_cfg.get("proxies_win11", None)
+            #win11
+            if win11prox is not None:
+                json_cfg['proxies'] = win11prox
+        else:
+            win10prox = json_cfg.get("proxies_win10", None)
+            if win10prox is not None:
+                json_cfg['proxies'] = win10prox
+
+            #win10
+
     return json_cfg
 
 def check_python_vers(program_files=r"C:\Program Files"):
